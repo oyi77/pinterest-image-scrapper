@@ -23,6 +23,7 @@ loop = 1
 true_rage = 0
 jumlah_file = 0
 for_replace = ["236x", "474x", "736x", "75x75_RS"]
+search_array = []
 
 range_data = int(input("Masukkan jumlah data yang diinginkan: "))
 if range_data > 10:
@@ -34,6 +35,8 @@ else:
 
 
 query = quote(input("Masukkan pencarian: "))
+if "," in query:
+    search_array = query.split(",")
 serch_name = query
 LIST = []
 json_data_list = []
@@ -155,7 +158,12 @@ for x in range(loop):
     try:
         mulai_scrape()
         if jumlah_file >=true_rage:
-            break
+            if search_array:
+                for q in search_array:
+                    jumlah_file = 0
+                    query = q
+             else:
+                break
     except Exception as e:
         ERROR = e
         EJEKULASI = True

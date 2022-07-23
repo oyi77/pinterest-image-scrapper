@@ -22,6 +22,7 @@ options.add_argument("--headless")
 loop = 1
 true_rage = 0
 jumlah_file = 0
+for_replace = ["236x", "474x", "736x", "75x75_RS"]
 
 range_data = int(input("Masukkan jumlah data yang diinginkan: "))
 if range_data > 10:
@@ -68,6 +69,8 @@ def ambil_data(driver):
             img = href.img or {"src": ""}
             img = img["src"]
             if pin_id and img:
+                for r in for_replace:
+                    img = img.replace(r,"originals")
                 final_source.append({"pin_id": pin_id, "img": img})
     results = [{"id": i["pin_id"], "name_category": unquote(serch_name).replace(" ", "_"), "title": unquote(serch_name), "image": i["img"]} for i in final_source]
     data = ext_scrap()

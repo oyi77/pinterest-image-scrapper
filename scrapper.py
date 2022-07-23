@@ -34,15 +34,13 @@ else:
     true_rage = range_data
 
 
-query = quote(input("Masukkan pencarian: "))
-if "," in query:
-    search_array = query.split(",")
-serch_name = query
+query = input("Masukkan pencarian: ")
+search_array = query.split(",")
 LIST = []
 json_data_list = []
 #driver = Chrome(options=options)
 
-def mulai_scrape():
+def mulai_scrape(query2=''):
     driver = webdriver.Chrome(options=options)
     driver.get(f"https://id.pinterest.com/search/pins/?q={query}")
     WebDriverWait(driver, 30).until(
@@ -79,8 +77,9 @@ def ambil_data(driver):
     data = ext_scrap()
     final_result = data+results
     if len(final_result) >= 1:
-        print(f"Collectiong data .... {len(final_result)}")
+        print(f"Collectiong {query} data .... {len(final_result)}")
         jumlah_file += len(final_result)
+        print(f"Total {query} Data Collected : {jumlah_file}")
         for x in final_result:
             LIST.append(x)
         driver.quit()
@@ -153,24 +152,23 @@ def Compail():
 EJEKULASI = False
 COUNT = 0
 ERROR = ''
-for x in range(loop):
-    COUNT += 1
-    try:
-        mulai_scrape()
-        if jumlah_file >=true_rage:
-            if search_array:
-                for q in search_array:
-                    jumlah_file = 0
-                    query = q
-             else:
+for s in search_array:
+    query = quote(s)
+    serch_name = query
+    for x in range(loop):
+        COUNT += 1
+        try:
+            mulai_scrape()
+            if jumlah_file >=true_rage:
                 break
-    except Exception as e:
-        ERROR = e
-        EJEKULASI = True
-        continue
-    query = serch_name
-    query = query+str(COUNT)
-    time.sleep(2)
+        except Exception as e:
+            ERROR = e
+            EJEKULASI = True
+            continue
+        query = s
+        query = query+str(COUNT)
+        time.sleep(2)
+    jumlah_file = 0
 
 if EJEKULASI == True:
     print(f"Terjadi error: {ERROR}")
